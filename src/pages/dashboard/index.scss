@@ -1,0 +1,99 @@
+.dashboard-wrapper {
+  height: 100%;
+  padding: 10px;
+
+  .source-display-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    .user-wrapper {
+      display: flex;
+      align-items: center;
+      padding-bottom: 20px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid #ccc;
+      .user-wrapper__avatar-image {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-right: 40px;
+      }
+      .user-wrapper__describe {
+        .describe__nickname {
+          font-size: 32px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+    .login-info-wrapper {
+      .login-info-wrapper__loginTime,
+      .login-info-wrapper__loginLocation {
+        color: #999999;
+        font-size: 14px;
+        line-height: 28px;
+        span {
+          margin-left: 60px;
+          color: #666666;
+        }
+      }
+    }
+    .table-wrapper {
+      flex: 1;
+    }
+  }
+
+  .order-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    padding: 0 10px;
+    .order-wrapper__icon {
+      width: 80px;
+      height: 80px;
+      text-align: center;
+      line-height: 85px;
+      color: #fff;
+      border-top-left-radius: 5px;
+      border-bottom-left-radius: 5px;
+    }
+    .order-wrapper__card-wrapper {
+      display: flex;
+      width: 33%;
+      margin-bottom: 5px;
+      .ant-card-body {
+        display: flex;
+        width: 100%;
+      }
+      .order-wrapper__detail {
+        margin-left: 10px;
+        .detail__money {
+          font-size: 34px;
+          font-weight: bold;
+        }
+        .detail__name {
+          font-size: 14px;
+          color: #999999;
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+  .panel-display-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .chart-area-wrapper {
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      flex: 1;
+      padding: 0 10px;
+      .chart-area-wrapper__footer{
+        flex:1;
+        display: flex;
+
+      }
+    }
+  }
+}

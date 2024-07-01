@@ -1,0 +1,14 @@
+.user-wrapper{
+  padding: 10px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  .user-wrapper__action-wrapper{
+    display: flex;
+    justify-content: space-between;
+  }
+  .user-wrapper__table-wrapper{
+    margin-top:10px;
+    height: 100%;
+  }
+}
