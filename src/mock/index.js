@@ -6,3 +6,11 @@ import userApi from "@/mock/response/user";
 Mock.mock("/getDashboardData", dashboardApi.getStatisticalData);
 
 Mock.mock(RegExp("/user/getList" + ".*"), "get", userApi.getUserList);
+
+Mock.mock(RegExp("/user/addUser"), "post", userApi.createUser);
+
+Mock.mock(RegExp("/user/updateUser"), "put", userApi.updateUser);
+
+Mock.mock(RegExp("/user/deleteUser" ), "post", userApi.deleteUser);
+
+Mock.mock(RegExp("/user/batchDeleteUsers" + ".*"), "delete", userApi.batchremove);

@@ -173,7 +173,7 @@ const HomeComponent = () => {
 
   return (
     <Row className="dashboard-wrapper">
-      <Col span={8}>
+      <Col style={{ height: "100%" }} span={8}>
         <div className="source-display-wrapper">
           <Card hoverable>
             <div className="user-wrapper">
@@ -197,11 +197,16 @@ const HomeComponent = () => {
             hoverable
             style={{ marginTop: "10px" }}
           >
-            <Table rowKey={"name"} columns={columns} dataSource={dataSource} />
+            <Table
+              pagination={false}
+              rowKey={"name"}
+              columns={columns}
+              dataSource={dataSource}
+            />
           </Card>
         </div>
       </Col>
-      <Col span={16}>
+      <Col style={{ height: "100%" }} span={16}>
         <div className="panel-display-wrapper">
           <div className="order-wrapper">
             {orderData.map((item, i) => {

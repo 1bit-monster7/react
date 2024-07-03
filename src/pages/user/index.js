@@ -1,8 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Popconfirm, Table } from "antd";
+import { Button, Form, Input, Popconfirm, Table, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import "./index.scss";
-import { getUserList } from "@/api/user";
+import {
+  addUser,
+  batchDeleteUsers,
+  deleteUser,
+  getUserList,
+  updateUser,
+} from "@/api/user";
+import FormDlgComponents from "@/pages/user/components/FormDlgComponents";
+import dayjs from "dayjs";
 const UserComponent = () => {
   const columns = [
     {
@@ -35,9 +43,7 @@ const UserComponent = () => {
               编辑
             </Button>
             <Popconfirm
-              open={open}
               onConfirm={() => handleDelete(row)}
-              onCancel={() => setOpen(false)}
               title="提示"
               description="确认删除该用户？"
               okText="确认"
@@ -53,6 +59,8 @@ const UserComponent = () => {
     },
   ];
 
+  const [messageApi, contextHolder] = message.useMessage();
+
   const [queryParams, setQueryParams] = useState({
     name: null,
     page: 1,
@@ -61,20 +69,54 @@ const UserComponent = () => {
 
   const [List, setList] = useState([]);
 
-  const [open, setOpen] = useState(false);
-
   const [total, setTotal] = useState(0);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [title, setTitle] = useState("新增");
+
+  const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+
+  const [userForm] = Form.useForm();
+
+  const onSelectChange = (newSelectedRowKeys) => {
+    console.log("selectedRowKeys changed: ", newSelectedRowKeys);
+    setSelectedRowKeys(newSelectedRowKeys);
+  };
+  const rowSelection = {
+    selectedRowKeys,
+    onChange: onSelectChange,
+  };
   const handleEdit = (row) => {
-    console.log(row, "edit");
+    console.log(row,'row')
+    userForm.resetFields();
+    if (row?.id) userForm.setFieldsValue({ ...row, birth: dayjs(row.birth) });
+    setTitle(row?.id ? "编辑" : "新增");
+    setIsModalOpen(true);
   };
 
-  const handleDelete = (row) => {
-    console.log(row, "delete");
-    setOpen(true);
-  };
-  const handleAdd = () => {
-    console.log("add");
+  const handleDelete = async (row) => {
+    const { id } = row;
+    const ids = selectedRowKeys.join(",");
+    try {
+      if (id) {
+        await deleteUser({ id });
+        messageApi.success("删除成功");
+        // 更新 selectedRowKeys，去除已删除的 id
+        const updatedSelectedRowKeys = selectedRowKeys.filter(
+          (rowId) => rowId !== id,
+        );
+        setSelectedRowKeys(updatedSelectedRowKeys);
+      } else {
+        await batchDeleteUsers({ ids });
+        setSelectedRowKeys([]); // 清空
+        messageApi.success("批量删除成功");
+      }
+    } catch (error) {
+      messageApi.error("删除失败");
+    } finally {
+      getList();
+    }
   };
 
   const onFinish = (form) => {
@@ -96,27 +138,78 @@ const UserComponent = () => {
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-  useEffect(() => {
-    console.log(queryParams, "queryParams");
+
+  const getList = () => {
     getUserList(queryParams).then((res) => {
       console.log(res, "List");
       const { list = [], count: total } = res;
       setList(list);
       setTotal(total);
     });
+  };
+
+  const submit = async () => {
+    try {
+      console.log("submit 提交");
+
+      const values = await userForm.validateFields();
+
+      const formattedValues = {
+        ...values,
+        birth: dayjs(values.birth).format("YYYY-MM-DD"),
+      };
+
+      if (formattedValues.id) {
+        await updateUser(formattedValues);
+        messageApi.success("修改成功！");
+      } else {
+        await addUser(formattedValues);
+        messageApi.success("新增成功！");
+      }
+
+      setIsModalOpen(false);
+      getList();
+    } catch (errorInfo) {
+      console.log("validate failed:", errorInfo);
+      messageApi.error("表单验证失败");
+    }
+  };
+  useEffect(() => {
+    console.log(queryParams, "queryParams");
+    getList();
   }, [queryParams]);
 
   return (
     <div className="user-wrapper">
+      {contextHolder}
       <div className="user-wrapper__action-wrapper">
-        <Button
-          onClick={handleAdd}
-          type="primary"
-          icon={<PlusOutlined />}
-          iconPosition="start"
-        >
-          新增
-        </Button>
+        <div>
+          <Button
+            onClick={handleEdit}
+            type="primary"
+            icon={<PlusOutlined />}
+            iconPosition="start"
+          >
+            新增
+          </Button>
+          <Popconfirm
+            onConfirm={handleDelete}
+            title="提示"
+            description="确认删除所有勾选的用户？"
+            okText="确认"
+            cancelText="取消"
+          >
+            <Button
+              style={{ marginLeft: "10px" }}
+              disabled={selectedRowKeys.length === 0}
+              danger
+              type="primary"
+              iconPosition="start"
+            >
+              批量删除
+            </Button>
+          </Popconfirm>
+        </div>
         <div className="action-wrapper__search">
           <Form
             layout="inline"
@@ -138,6 +231,8 @@ const UserComponent = () => {
       </div>
       <div className="user-wrapper__table-wrapper">
         <Table
+          rowKey={"id"}
+          rowSelection={rowSelection}
           onChange={TableChange}
           style={{ height: "100%" }}
           scroll={{
@@ -150,9 +245,15 @@ const UserComponent = () => {
           }}
           columns={columns}
           dataSource={List}
-          rowKey={"id"}
         />
       </div>
+      <FormDlgComponents
+        userForm={userForm}
+        submit={submit}
+        title={title}
+        isModalOpen={isModalOpen}
+        setIsModalOpen={setIsModalOpen}
+      />
     </div>
   );
 };

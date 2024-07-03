@@ -29,7 +29,8 @@ console.log(items, "routes");
 
 const SideComponent = ({ isCollapsed }) => {
   const navigate = useNavigate(); // 路由跳转
-  const handleMenu = ({ item, key, keyPath, selectedKeys, domEvent }) => {
+  const handleMenu = (info) => {
+    const { key } = info;
     navigate(key);
   };
   return (
