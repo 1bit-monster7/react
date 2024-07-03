@@ -3,17 +3,23 @@ import ReactDOM from "react-dom/client";
 import "./index.scss";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+// for date-picker i18n
+import zhCN from 'antd/locale/zh_CN';
+import 'dayjs/locale/zh-cn';
 
 import { Provider } from "react-redux";
 import store from "@/store";
 
 import '@/mock'
+import {ConfigProvider} from "antd";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+        <ConfigProvider locale={zhCN}>
+            <App />
+        </ConfigProvider>
     </Provider>
   </React.StrictMode>,
 );

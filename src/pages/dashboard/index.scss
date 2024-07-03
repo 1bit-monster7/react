@@ -89,10 +89,11 @@
       min-width: 0;
       flex: 1;
       padding: 0 10px;
-      .chart-area-wrapper__footer{
-        flex:1;
+      min-height: 0;
+      .chart-area-wrapper__footer {
+        min-height: 0;
+        flex: 1;
         display: flex;
-
       }
     }
   }
