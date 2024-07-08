@@ -5,7 +5,7 @@ import menus from "@/config";
 import * as Icons from "@ant-design/icons";
 import { TwitterOutlined } from "@ant-design/icons";
 import "./index.scss";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 const getIconElement = (name) => React.createElement(Icons[name]); // 通过name匹配获取Icon节点
 
 const menuConversion = (menus) => {
@@ -24,11 +24,9 @@ const menuConversion = (menus) => {
 };
 
 const items = menuConversion(menus);
-
-console.log(items, "routes");
-
 const SideComponent = ({ isCollapsed }) => {
   const navigate = useNavigate(); // 路由跳转
+  const location = useLocation(); // 获取当前路径
   const handleMenu = (info) => {
     const { key } = info;
     navigate(key);
@@ -48,6 +46,7 @@ const SideComponent = ({ isCollapsed }) => {
         onClick={handleMenu}
         theme="dark"
         mode="inline"
+        selectedKeys={[location.pathname]} // 动态绑定当前路径
         defaultSelectedKeys={["/dashboard"]}
         items={items}
       />

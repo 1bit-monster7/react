@@ -5,6 +5,7 @@ export default [
     label: "首页",
     icon: "HomeOutlined",
     url: "/dashboard/index",
+    anchor:true
   },
   {
     path: "/mall",
@@ -32,7 +33,7 @@ export default [
         icon: "SettingOutlined",
         children:[
           {
-            path:'/thirdLevelRouting',
+            path:'/other/pageOne/thirdLevelRouting',
             name:'thirdLevelRouting',
             label:'三级路由',
             icon:'SettingOutlined'

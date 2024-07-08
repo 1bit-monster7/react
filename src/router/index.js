@@ -5,6 +5,7 @@ import UserComponent from "../pages/user";
 import PageOneComponent from "../pages/other/pageOne";
 import PageTwoComponent from "../pages/other/pageTwo";
 import LayoutComponent from "../Layout";
+import ThirdLevelRoutingComponent from "@/pages/other/thirdLevelRouting";
 
 const router = [
   {
@@ -34,6 +35,12 @@ const router = [
           {
             path: "pageOne",
             Component: PageOneComponent,
+            children: [
+              {
+                path: "thirdLevelRouting",
+                Component: ThirdLevelRoutingComponent,
+              },
+            ],
           },
           {
             path: "pageTwo",

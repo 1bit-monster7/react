@@ -10,6 +10,7 @@ const { Content } = Layout;
 
 import { useSelector, useDispatch } from "react-redux";
 import { switchFoldingState } from "@/store/reduces/LayoutSideStore";
+import TagView from "@/Layout/components/TagView";
 
 const LayoutComponent = () => {
   const {
@@ -30,7 +31,8 @@ const LayoutComponent = () => {
       <SideComponent isCollapsed={isCollapsed} />
       <Layout>
         <HeaderComponent isCollapsed={isCollapsed} onClick={switchSide} />
-        <Content >
+        <TagView />
+        <Content>
           <Outlet />
         </Content>
       </Layout>

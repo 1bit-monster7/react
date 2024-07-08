@@ -50,9 +50,11 @@ const FormDlgComponents = ({
           onFinish={onFinish}
           onFinishFailed={onFinishFailed}
         >
-          <Form.Item name="id" label="ID" style={{ display: "none" }}>
-            <Input type="hidden" />
-          </Form.Item>
+          {title === "编辑" && (
+            <Form.Item name="id" label="ID" style={{ display: "none" }}>
+              <Input type="hidden" />
+            </Form.Item>
+          )}
           <Form.Item
             label="用户名"
             name="name"

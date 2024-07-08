@@ -1,5 +1,13 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Button, Form, Input, Popconfirm, Table, message } from "antd";
+import {
+  Button,
+  Form,
+  Input,
+  Popconfirm,
+  Table,
+  message,
+  Pagination,
+} from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import "./index.scss";
 import {
@@ -88,7 +96,7 @@ const UserComponent = () => {
     onChange: onSelectChange,
   };
   const handleEdit = (row) => {
-    console.log(row,'row')
+    console.log(row, "row");
     userForm.resetFields();
     if (row?.id) userForm.setFieldsValue({ ...row, birth: dayjs(row.birth) });
     setTitle(row?.id ? "编辑" : "新增");
@@ -124,15 +132,8 @@ const UserComponent = () => {
     setQueryParams({ ...queryParams, ...form });
   };
 
-  const TableChange = (pagination) => {
-    console.log(pagination, "pagination");
-    const { pageSize: limit, total, current: page } = pagination;
-    const { name } = queryParams;
-    setQueryParams({
-      limit,
-      page,
-      name,
-    });
+  const onChangePages = (page, limit) => {
+    setQueryParams({ ...queryParams, page, limit });
   };
 
   const onFinishFailed = (errorInfo) => {
@@ -231,22 +232,26 @@ const UserComponent = () => {
       </div>
       <div className="user-wrapper__table-wrapper">
         <Table
+          style={{ height: "100%" }}
           rowKey={"id"}
           rowSelection={rowSelection}
-          onChange={TableChange}
-          style={{ height: "100%" }}
           scroll={{
-            y: "676px",
+            y: "650px",
           }}
-          pagination={{
-            pageSize: queryParams.limit,
-            pageSizeOptions: [10, 20, 50, 100],
-            total,
-          }}
+          pagination={false}
           columns={columns}
           dataSource={List}
         />
       </div>
+      <Pagination
+          className="page-wrapper"
+        style={{ height: "40px", lineHeight: "40px" }}
+        align="center"
+        onShow
+        onChange={(page, pageSize) => onChangePages(page, pageSize)}
+        pageSizeOptions={[10, 20, 50, 100]}
+        total={total}
+      />
       <FormDlgComponents
         userForm={userForm}
         submit={submit}
