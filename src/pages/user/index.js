@@ -129,7 +129,7 @@ const UserComponent = () => {
 
   const onFinish = (form) => {
     console.log("Success:", form);
-    setQueryParams({ ...queryParams, ...form });
+    setQueryParams({ ...queryParams, ...form ,page:1});
   };
 
   const onChangePages = (page, limit) => {

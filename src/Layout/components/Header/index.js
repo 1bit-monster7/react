@@ -1,5 +1,5 @@
 import React from "react";
-import { Avatar, Button, Dropdown } from "antd";
+import { Avatar, Button, Dropdown, Popconfirm } from "antd";
 import { Header } from "antd/es/layout/layout";
 import "./index.scss";
 import {
@@ -7,10 +7,14 @@ import {
   MenuUnfoldOutlined,
   SmileOutlined,
 } from "@ant-design/icons";
+import { Navigate, useNavigate } from "react-router-dom";
 const HeaderComponent = ({ isCollapsed, onClick }) => {
   const url = require("@/assets/images/user.jpg");
+  const navigator = useNavigate();
   const logOut = () => {
     console.log("Log Out");
+    localStorage.removeItem("token");
+    navigator("/login");
   };
   const items = [
     {
@@ -24,9 +28,17 @@ const HeaderComponent = ({ isCollapsed, onClick }) => {
     {
       key: "2",
       label: (
-        <a onClick={logOut} target="_blank" rel="noopener noreferrer">
-          退出
-        </a>
+        <Popconfirm
+          title="提示"
+          description="确定要退出吗?"
+          onConfirm={logOut}
+          okText="确定"
+          cancelText="取消"
+        >
+          <a target="_blank" rel="noopener noreferrer">
+            退出
+          </a>
+        </Popconfirm>
       ),
       icon: <SmileOutlined />,
     },

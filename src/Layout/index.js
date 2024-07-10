@@ -11,6 +11,7 @@ const { Content } = Layout;
 import { useSelector, useDispatch } from "react-redux";
 import { switchFoldingState } from "@/store/reduces/LayoutSideStore";
 import TagView from "@/Layout/components/TagView";
+import {PermissionComponent} from "@/Layout/components/Permission";
 
 const LayoutComponent = () => {
   const {
@@ -27,16 +28,18 @@ const LayoutComponent = () => {
   };
 
   return (
-    <Layout className="layout-wrapper">
-      <SideComponent isCollapsed={isCollapsed} />
-      <Layout>
-        <HeaderComponent isCollapsed={isCollapsed} onClick={switchSide} />
-        <TagView />
-        <Content>
-          <Outlet />
-        </Content>
-      </Layout>
-    </Layout>
+      <PermissionComponent>
+        <Layout className="layout-wrapper">
+          <SideComponent isCollapsed={isCollapsed} />
+          <Layout>
+            <HeaderComponent isCollapsed={isCollapsed} onClick={switchSide} />
+            <TagView />
+            <Content>
+              <Outlet />
+            </Content>
+          </Layout>
+        </Layout>
+      </PermissionComponent>
   );
 };
 

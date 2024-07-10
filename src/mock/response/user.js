@@ -1,23 +1,29 @@
 import Mock from 'mockjs'
 
 // get请求从config.url获取参数，post从config.body中获取参数
-function param2Obj (url) {
-  const search = url.split('?')[1]
+function param2Obj(url) {
+  const search = url.split('?')[1];
   if (!search) {
-    return {}
+    return {};
   }
-  return JSON.parse(
-    '{"' +
-    decodeURIComponent(search)
-      .replace(/"/g, '\\"')
-      .replace(/&/g, '","')
-      .replace(/=/g, '":"') +
-    '"}'
-  )
+
+  try {
+    return JSON.parse(
+        '{"' +
+        decodeURIComponent(search)
+            .replace(/"/g, '\\"')
+            .replace(/&/g, '","')
+            .replace(/=/g, '":"') +
+        '"}'
+    );
+  } catch (error) {
+    console.error("Error parsing URL parameters:", error);
+    return {};
+  }
 }
 
 let List = []
-const count = 209
+const count = 208
 
 for (let i = 0; i < count; i++) {
   List.push(

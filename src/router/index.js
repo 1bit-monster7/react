@@ -2,10 +2,10 @@ import { createBrowserRouter, Navigate } from "react-router-dom";
 import DashboardComponent from "../pages/dashboard";
 import MallComponent from "../pages/mall";
 import UserComponent from "../pages/user";
-import PageOneComponent from "../pages/other/pageOne";
 import PageTwoComponent from "../pages/other/pageTwo";
 import LayoutComponent from "../Layout";
 import ThirdLevelRoutingComponent from "@/pages/other/thirdLevelRouting";
+import LoginComponent from "@/pages/login";
 
 const router = [
   {
@@ -34,7 +34,6 @@ const router = [
         children: [
           {
             path: "pageOne",
-            Component: PageOneComponent,
             children: [
               {
                 path: "thirdLevelRouting",
@@ -49,6 +48,10 @@ const router = [
         ],
       },
     ],
+  },
+  {
+    path: "/login",
+    Component: LoginComponent,
   },
 ];
 
